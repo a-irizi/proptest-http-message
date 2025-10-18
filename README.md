@@ -7,6 +7,6 @@ collection of [proptest](https://docs.rs/proptest/latest/proptest/) strategies r
   * [ ] request target:
     * [ ] origin form
     * [ ] absolute form
-    * [ ] authority form
+    * [X] authority form
     * [ ] asterisk form
   * [ ] HTTP version
