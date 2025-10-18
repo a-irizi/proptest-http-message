@@ -1,8 +1,10 @@
 //! strategies for generating IP v6 addresses.
 
-use std::net::{Ipv4Addr, Ipv6Addr};
+use std::net::Ipv6Addr;
 
-use proptest::{prelude::any, prop_oneof, strategy::Strategy};
+use proptest::{prop_oneof, strategy::Strategy};
+
+use crate::request_line::target::authority_form::ip_v4::ip_v4;
 
 #[must_use = "strategies do nothing unless used"]
 fn ip_v6_segment_strategy() -> impl Strategy<Value = (u16, String)> {
@@ -133,17 +135,12 @@ pub fn ip_v6_compressed_middle() -> impl Strategy<Value = (Ipv6Addr, String)> {
     })
 }
 
-fn ip_v4_addr_strategy() -> impl Strategy<Value = (Ipv4Addr, String)> {
-  ((any::<u8>()), (any::<u8>()), (any::<u8>()), (any::<u8>()))
-    .prop_map(move |(a, b, c, d)| (Ipv4Addr::new(a, b, c, d), format!("{a}.{b}.{c}.{d}")))
-}
-
 /// strategy for generating IP v6 mapped IP v4.
 ///
 /// # Returns
 /// `Ipv6Add` mapped IP v6 and its representation.
 pub fn ip_v6_mapped_ip_v4() -> impl Strategy<Value = (Ipv6Addr, String)> {
-  ip_v4_addr_strategy()
+  ip_v4()
     .prop_map(move |(ip_v4, ip_v4_repr)| (ip_v4.to_ipv6_mapped(), format!("::ffff:{ip_v4_repr}")))
 }
 
