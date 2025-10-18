@@ -1,4 +1,4 @@
-//! strategies for generating IP v4 addresses.
+//! IP v4 addresses strategies.
 
 use std::net::Ipv4Addr;
 

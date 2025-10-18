@@ -1,4 +1,4 @@
-//! strategies for generating IP v6 addresses.
+//! IP v6 addresses strategies.
 
 use std::net::Ipv6Addr;
 
@@ -135,15 +135,19 @@ pub fn ip_v6_compressed_middle() -> impl Strategy<Value = (Ipv6Addr, String)> {
     })
 }
 
-/// strategy for generating IP v6 mapped IP v4.
+/// strategy for generating IP v6 mapped IP v4 address.
 ///
 /// # Returns
-/// `Ipv6Add` mapped IP v6 and its representation.
+/// `Ipv6Add` mapped IP v4 and its representation.
 pub fn ip_v6_mapped_ip_v4() -> impl Strategy<Value = (Ipv6Addr, String)> {
   ip_v4()
     .prop_map(move |(ip_v4, ip_v4_repr)| (ip_v4.to_ipv6_mapped(), format!("::ffff:{ip_v4_repr}")))
 }
 
+/// strategy for generating IP v6 address.
+///
+/// # Returns
+/// `Ipv6Add` and its representation.
 pub fn ip_v6() -> impl Strategy<Value = (Ipv6Addr, String)> {
   prop_oneof![
     ip_v6_uncompressed(),

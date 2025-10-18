@@ -1,3 +1,3 @@
-//! strategies for generating an HTTP request line or HTTP request line components.
+//! HTTP request line strategies.
 pub mod target;
 pub mod verb;
