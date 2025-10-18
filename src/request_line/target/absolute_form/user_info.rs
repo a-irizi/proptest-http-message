@@ -3,6 +3,7 @@
 use std::fmt::Write;
 
 use proptest::{
+  option::of,
   prelude::{Strategy, any},
   prop_oneof,
   sample::select,
@@ -56,18 +57,28 @@ fn user_info_subcomponent() -> impl Strategy<Value = String> {
   })
 }
 
+#[derive(Debug)]
+pub struct UserInfo {
+  pub username: String,
+  pub password: Option<String>,
+}
+
 /// URI authority's user information.
 ///
 /// user info does not have a standard format, buf for HTTP, it usually takes the form:
 /// > `<username>[:[<password>]]`.
 ///
 /// where the password is optional, and can be an empty string.
-pub fn user_info() -> impl Strategy<Value = String> {
-  (
-    user_info_subcomponent(),
-    prop_oneof!["", ":", user_info_subcomponent().prop_map(|password| format!(":{password}"))],
-  )
-    .prop_map(|(username, password)| format!("{username}{password}"))
+/// # Returns
+/// `UserInfo` along with it's representation.
+pub fn user_info() -> impl Strategy<Value = (UserInfo, String)> {
+  (user_info_subcomponent(), of(user_info_subcomponent())).prop_map(|(username, password)| {
+    let mut repr = username.clone();
+    if let Some(password) = password.as_ref() {
+      let _ = write!(repr, ":{password}");
+    }
+    (UserInfo { username, password }, repr)
+  })
 }
 
 #[cfg(test)]
@@ -77,8 +88,9 @@ mod tests {
   use super::*;
   proptest! {
     #[test]
-    fn userinfo_works(userinfo in user_info()) {
-      assert!(userinfo.chars().all(|c| c == '%' || c == ':' || USER_INFO_SAFE_CHARS.contains(&c)));
+    fn userinfo_works((_, repr) in user_info()) {
+      println!("{repr}");
+      assert!(repr.chars().all(|c| c == '%' || c == ':' || USER_INFO_SAFE_CHARS.contains(&c)));
     }
   }
 }
