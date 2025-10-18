@@ -1,9 +1,11 @@
+//! url scheme name strategies.
+
 use proptest::prelude::Strategy;
 
 /// HTTP scheme.
 ///
 /// # Returns
-/// HTTP or HTTPS with random letter casing.
+/// strings `"HTTP"` or `"HTTPS"` with random letter casing.
 pub fn http_scheme() -> impl Strategy<Value = String> {
   "(H|h)(t|T)(t|T)(p|P)(s|S){0,1}"
 }
