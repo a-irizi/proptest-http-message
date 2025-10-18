@@ -115,7 +115,7 @@ pub fn request_verb_wrong_case() -> impl Strategy<Value = String> {
 }
 
 prop_compose! {
-  /// strategy for generating invalid HTTP verbs.
+  /// strategy for generating invalid HTTP request verbs.
   pub fn request_verb_wrong()
   (input in ".*".prop_filter("valid HTTP verb", |input|
     !matches!(
