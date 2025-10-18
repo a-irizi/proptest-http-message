@@ -6,3 +6,6 @@ edition = "2024"
 [dependencies]
 proptest = "1.8.0"
 rand = "0.9.2"
+
+[dev-dependencies]
+claims = "0.8.0"

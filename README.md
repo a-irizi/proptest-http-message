@@ -4,5 +4,9 @@ collection of [proptest](https://docs.rs/proptest/latest/proptest/) strategies r
 ## HTTP Request
 * [ ] request line:
   * [X] request verb
-  * [ ] request target
+  * [ ] request target:
+    * [ ] origin form
+    * [ ] absolute form
+    * [ ] authority form
+    * [ ] asterisk form
   * [ ] HTTP version
