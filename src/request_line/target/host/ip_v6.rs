@@ -4,7 +4,7 @@ use std::net::Ipv6Addr;
 
 use proptest::{prop_oneof, strategy::Strategy};
 
-use crate::request_line::target::authority_form::ip_v4::ip_v4;
+use super::ip_v4::ip_v4;
 
 #[must_use = "strategies do nothing unless used"]
 fn ip_v6_segment_strategy() -> impl Strategy<Value = (u16, String)> {

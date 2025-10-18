@@ -30,7 +30,7 @@ pub fn domain_label() -> impl Strategy<Value = String> {
 /// # Arguments
 /// * `max_label_count`: the maximum number of labels composing the domain.
 pub fn domain(max_label_count: usize) -> impl Strategy<Value = String> {
-  ("\\.{0,1}", proptest::collection::vec(domain_label(), max_label_count))
+  ("\\.{0,1}", proptest::collection::vec(domain_label(), 1..=max_label_count))
     .prop_map(move |(root, labels)| format!("{}{}", root, labels.join(".")))
 }
 
