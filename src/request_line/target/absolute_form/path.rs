@@ -17,24 +17,11 @@ use crate::request_line::{
 static PATH_UNSAFE_CHARS: LazyLock<Vec<RangeInclusive<char>>> =
   LazyLock::new(|| char_diff_intervals(&PATH_SAFE_CHARS));
 
-const PATH_SAFE_CHARS: [char; concat_arrays_size!(UNRESERVED, SUB_DELIMS)] =
-  concat_arrays!(UNRESERVED, SUB_DELIMS);
+const PATH_SAFE_CHARS: [char; concat_arrays_size!(UNRESERVED, SUB_DELIMS) + 2] =
+  concat_arrays!(UNRESERVED, SUB_DELIMS, [':', '@']);
 
 fn pchar() -> impl Strategy<Value = UrlChar> {
-  prop_oneof![
-    98 => prop_oneof![
-      98 => safe_and_percent_encoded_char(&PATH_SAFE_CHARS, &PATH_UNSAFE_CHARS),
-      2 => Just(UrlChar::Normal(':')),
-    ],
-    2 => Just(UrlChar::Normal('@'))
-  ]
-}
-
-fn pchar_nc() -> impl Strategy<Value = UrlChar> {
-  prop_oneof![
-    98 => safe_and_percent_encoded_char(&PATH_SAFE_CHARS, &PATH_UNSAFE_CHARS),
-    2 => Just(UrlChar::Normal('@'))
-  ]
+  safe_and_percent_encoded_char(&PATH_SAFE_CHARS, &PATH_UNSAFE_CHARS)
 }
 
 fn segment(min_chars: usize, max_chars: usize) -> impl Strategy<Value = String> {
