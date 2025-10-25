@@ -1,4 +1,4 @@
-//! url authority strategies.
+//! URL authority strategies.
 
 use std::fmt::Write;
 

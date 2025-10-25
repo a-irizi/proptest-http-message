@@ -1,4 +1,4 @@
-//! url scheme name strategies.
+//! URL scheme name strategies.
 
 use proptest::prelude::Strategy;
 

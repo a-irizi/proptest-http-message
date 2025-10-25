@@ -1,4 +1,4 @@
-//! url authority's user info strategies.
+//! URL authority's user info strategies.
 
 use std::fmt::Write;
 
