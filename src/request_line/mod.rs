@@ -14,7 +14,7 @@ const UNRESERVED: [char; 66] = [
   '5', '6', '7', '8', '9', '-', '.', '_', '~',
 ];
 
-const SUB_DELIMS: [char; 11] = ['!', '$', '&', '’', '(', ')', '*', '+', ',', ';', '='];
+const SUB_DELIMS: [char; 11] = ['!', '$', '&', '\'', '(', ')', '*', '+', ',', ';', '='];
 const GEN_DELIMS: [char; 7] = [':', '/', '?', '#', '[', ']', '@'];
 const RESERVED: [char; concat_arrays_size!(SUB_DELIMS, GEN_DELIMS)] =
   concat_arrays!(SUB_DELIMS, GEN_DELIMS);
