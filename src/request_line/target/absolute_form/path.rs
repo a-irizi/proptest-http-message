@@ -3,11 +3,7 @@
 use std::{fmt::Write, num::NonZero, ops::RangeInclusive, sync::LazyLock};
 
 use array_concat::{concat_arrays, concat_arrays_size};
-use proptest::{
-  option::of,
-  prelude::{Just, Strategy},
-  prop_oneof,
-};
+use proptest::{option::of, prelude::Strategy};
 
 use crate::request_line::{
   SUB_DELIMS, UNRESERVED, UrlChar, char_diff_intervals, safe_and_percent_encoded_char,
