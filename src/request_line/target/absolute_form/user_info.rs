@@ -17,7 +17,7 @@ const USER_INFO_SAFE_CHARS: [char; concat_arrays_size!(UNRESERVED, SUB_DELIMS)] 
 
 fn user_info_subcomponent() -> impl Strategy<Value = String> {
   proptest::collection::vec(
-    safe_and_percent_encoded_char(&USER_INFO_SAFE_CHARS, &*USER_INFO_UNSAFE_CHARS),
+    safe_and_percent_encoded_char(&USER_INFO_SAFE_CHARS, &USER_INFO_UNSAFE_CHARS),
     0..=50,
   )
   .prop_map(url_chars_to_string)
