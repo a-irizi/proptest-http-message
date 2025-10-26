@@ -2,25 +2,23 @@
 
 use std::{ops::RangeInclusive, sync::LazyLock};
 
+use array_concat::{concat_arrays, concat_arrays_size};
 use proptest::prelude::Strategy;
 
 use crate::request_line::{
-  SUB_DELIMS, UNRESERVED, UrlChar, char_diff_intervals, safe_and_percent_encoded_char,
-  url_chars_to_string,
+  UNRESERVED, UrlChar, char_diff_intervals, safe_and_percent_encoded_char, url_chars_to_string,
 };
 
 static QUERY_UNSAFE_CHARS: LazyLock<Vec<RangeInclusive<char>>> =
   LazyLock::new(|| char_diff_intervals(&QUERY_SAFE_CHARS));
 
-static QUERY_SAFE_CHARS: LazyLock<Vec<char>> = LazyLock::new(|| {
-  // space character is included in safe chars, because it should be replaced with
-  // '+' and not percent-encoded.
-  let mut safe_chars = vec![':', '@', '/', '?', ' '];
-  safe_chars.extend_from_slice(&UNRESERVED);
-  safe_chars.extend(SUB_DELIMS.into_iter().filter(|c| !matches!(c, '+' | '&' | '=')));
-
-  safe_chars
-});
+// space character is included in safe chars, because it should be replaced with
+// '+' and not percent-encoded.
+// even if RFC 3986 states that sub-delims can be part of a query, it also states
+// that all reserved characters should be percent encoded. the safe option is to
+// percent encode all reserved characters.
+const QUERY_SAFE_CHARS: [char; concat_arrays_size!(UNRESERVED) + 5] =
+  concat_arrays!(UNRESERVED, [':', '@', '/', '?', ' ']);
 
 fn chars() -> impl Strategy<Value = UrlChar> {
   safe_and_percent_encoded_char(&QUERY_SAFE_CHARS, &QUERY_UNSAFE_CHARS).prop_map(|c| {
