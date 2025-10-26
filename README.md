@@ -8,5 +8,5 @@ collection of [proptest](https://docs.rs/proptest/latest/proptest/) strategies r
     * [X] origin form
     * [X] absolute form
     * [X] authority form
-    * [ ] asterisk form
+    * [X] asterisk form
   * [ ] HTTP version
