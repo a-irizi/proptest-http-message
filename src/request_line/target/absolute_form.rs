@@ -70,9 +70,7 @@ mod tests {
     #![proptest_config(ProptestConfig::with_cases(10_000))]
     #[test]
     fn absolute_works((absolute_form, repr) in absolute(20, 50.try_into().unwrap(), 0..=20)) {
-      println!("{repr:?}");
       let url = assert_ok!(Url::parse(&repr), "should be good URL but got {repr}");
-      let url = dbg!(url);
       assert_eq!(absolute_form.scheme.to_ascii_lowercase(), url.scheme().to_ascii_lowercase());
       if let Some(user_info) = absolute_form.authority.user_info {
         assert_eq!(user_info.username, url.username(), "expected to get username {:?} but got {:?}", user_info.username, url.username());
