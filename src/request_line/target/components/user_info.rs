@@ -1,9 +1,9 @@
 //! URL authority's user info strategies.
 
-use std::{fmt::Write, ops::RangeInclusive, sync::LazyLock};
+use std::{ops::RangeInclusive, sync::LazyLock};
 
 use array_concat::{concat_arrays, concat_arrays_size};
-use proptest::{option::of, prelude::Strategy};
+use proptest::prelude::Strategy;
 
 use crate::request_line::{
   UNRESERVED, char_diff_intervals, safe_and_percent_encoded_char, url_chars_to_string,

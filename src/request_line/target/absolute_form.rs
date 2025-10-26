@@ -1,26 +1,16 @@
 //! HTTP request target in absolute form strategies.
 
-use std::{
-  num::{NonZero, NonZeroUsize},
-  ops::RangeInclusive,
-};
+use std::{num::NonZero, ops::RangeInclusive};
 
 use proptest::{option::of, prelude::Strategy};
 
-use crate::request_line::target::absolute_form::{
+use crate::request_line::target::components::{
   authority::{Authority, authority},
   fragment::fragment,
   path::{Path, path_absolute},
   query::{QueryParam, query},
   scheme::http_scheme,
 };
-
-pub mod authority;
-pub mod fragment;
-pub mod path;
-pub mod query;
-pub mod scheme;
-pub mod user_info;
 
 /// URL absolute form components
 #[derive(Debug)]
@@ -93,9 +83,9 @@ mod tests {
       }
 
       match (&absolute_form.authority.host, url.host()) {
-        (crate::request_line::target::host::Host::Domain(domain), Some(Host::Domain(domain2))) => assert_eq!(domain.to_lowercase(), domain2.to_lowercase(), "expected domain {:?} but parsed domain {:?}", domain.to_lowercase(), domain2.to_lowercase()),
-        (crate::request_line::target::host::Host::Ipv6(ipv6_addr, _), Some(Host::Ipv6(ipv6_addr2))) => assert_eq!(*ipv6_addr, ipv6_addr2, "expected IP v6 {ipv6_addr:?} but parsed IP v6 {ipv6_addr:?}"),
-        (crate::request_line::target::host::Host::Ipv4(ipv4_addr, _), Some(Host::Ipv4(ipv4_addr2))) => assert_eq!(*ipv4_addr, ipv4_addr2, "expected IP v6 {ipv4_addr:?} but parsed IP v6 {ipv4_addr:?}"),
+        (crate::request_line::target::components::host::Host::Domain(domain), Some(Host::Domain(domain2))) => assert_eq!(domain.to_lowercase(), domain2.to_lowercase(), "expected domain {:?} but parsed domain {:?}", domain.to_lowercase(), domain2.to_lowercase()),
+        (crate::request_line::target::components::host::Host::Ipv6(ipv6_addr, _), Some(Host::Ipv6(ipv6_addr2))) => assert_eq!(*ipv6_addr, ipv6_addr2, "expected IP v6 {ipv6_addr:?} but parsed IP v6 {ipv6_addr:?}"),
+        (crate::request_line::target::components::host::Host::Ipv4(ipv4_addr, _), Some(Host::Ipv4(ipv4_addr2))) => assert_eq!(*ipv4_addr, ipv4_addr2, "expected IP v6 {ipv4_addr:?} but parsed IP v6 {ipv4_addr:?}"),
         _ => panic!("expected host {:?} but parsed {:?}", absolute_form.authority.host, url.host())
       }
 

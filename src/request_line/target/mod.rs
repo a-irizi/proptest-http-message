@@ -2,4 +2,4 @@
 
 pub mod absolute_form;
 pub mod authority_form;
-pub mod host;
+pub mod components;

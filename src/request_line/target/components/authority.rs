@@ -7,10 +7,8 @@ use proptest::{
   prelude::{Strategy, any},
 };
 
-use crate::request_line::target::{
-  absolute_form::user_info::{UserInfo, user_info},
-  host::{Host, host},
-};
+use super::host::{Host, host};
+use super::user_info::{UserInfo, user_info};
 
 /// URL authority.
 #[derive(Debug)]

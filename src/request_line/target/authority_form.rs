@@ -2,7 +2,7 @@
 
 use proptest::prelude::{Strategy, any};
 
-use crate::request_line::target::host::{Host, host};
+use crate::request_line::target::components::host::{Host, host};
 
 /// strategy for generating target authority form.
 ///
