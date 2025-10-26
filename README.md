@@ -5,7 +5,7 @@ collection of [proptest](https://docs.rs/proptest/latest/proptest/) strategies r
 * [ ] request line:
   * [X] request verb
   * [ ] request target:
-    * [ ] origin form
+    * [X] origin form
     * [X] absolute form
     * [X] authority form
     * [ ] asterisk form
