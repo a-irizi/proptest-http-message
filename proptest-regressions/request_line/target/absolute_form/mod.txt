@@ -1,0 +1,15 @@
+# Seeds for failure cases proptest has generated in the past. It is
+# automatically read and these particular cases re-run before any
+# novel cases are generated.
+#
+# It is recommended to check this file in to source control so that
+# everyone who runs the test benefits from these saved cases.
+cc ba42de923e3dea9eb8da861d7cff530d03072ce5df1c8e06c0ebe832fd3a1a23 # shrinks to (absolute_form, repr) = (AbsoluteForm { scheme: "hTtp", authority: Authority { user_info: None, host: Domain("A"), port: None }, path: None, query: None, fragment: None }, "hTtp://A")
+cc 6e2366328d53f57929f4901ba0ad4ee5ac885fa03dfb41642fc7cc5725b0203f # shrinks to (absolute_form, repr) = (AbsoluteForm { scheme: "hTTp", authority: Authority { user_info: Some(UserInfo { username: ";", password: None }), host: Domain("a"), port: None }, path: None, query: None, fragment: None }, "hTTp://;@a")
+cc f836cf68cc1f1350fc7c1ae2d4d4c2f1c7ef677214178442a979f86e1709ae34 # shrinks to (absolute_form, repr) = (AbsoluteForm { scheme: "hTTp", authority: Authority { user_info: Some(UserInfo { username: "", password: Some("") }), host: Domain("A"), port: None }, path: None, query: None, fragment: None }, "hTTp://:@A")
+cc 4c7fbfbf54849d81f9ef6501cee5bb182267f61ad8146c2129572796e69bdb77 # shrinks to (absolute_form, repr) = (AbsoluteForm { scheme: "hTtP", authority: Authority { user_info: None, host: Domain("a"), port: None }, path: Some("/a/."), query: None, fragment: None }, "hTtP://a/a/.")
+cc 86aa430f1c35b37b29f08134e354098ceccb59f63c5633ac30c434076251052f # shrinks to (absolute_form, repr) = (AbsoluteForm { scheme: "HttP", authority: Authority { user_info: None, host: Domain("A"), port: None }, path: Some(Path { logical: "/a" }), query: None, fragment: None }, "HttP://A/a/")
+cc ec2fed37f76bfac06819f9acd4a765f406ecd76385f5d03e9a27bea85d0a84d1 # shrinks to (absolute_form, repr) = (AbsoluteForm { scheme: "HTTP", authority: Authority { user_info: None, host: Domain("a"), port: None }, path: Some(Path { logical: "/a" }), query: None, fragment: None }, "HTTP://a/a/.")
+cc 66e040dfd23bee744abcab9b3402228c023e0791687389fd056f0beec26ad4df # shrinks to (absolute_form, repr) = (AbsoluteForm { scheme: "httP", authority: Authority { user_info: None, host: Domain("A"), port: None }, path: Some(Path { logical: "/a//" }), query: None, fragment: None }, "httP://A/a/./")
+cc 6c2ca5489208a237717a44fdc11d1c8a955d5d0ef8428e35cc93af23484e4376 # shrinks to (absolute_form, repr) = (AbsoluteForm { scheme: "HTtP", authority: Authority { user_info: None, host: Domain("a"), port: Some(80) }, path: None, query: None, fragment: None }, "HTtP://a:80")
+cc a4e279c9a021f18b2d7778cdac6f7a7a7f56b7b67ff7df33c77249ca2a2fff8f # shrinks to (absolute_form, repr) = (AbsoluteForm { scheme: "HttP", authority: Authority { user_info: None, host: Domain("xN--aa-AA--AAa"), port: None }, path: None, query: None, fragment: None }, "HttP://xN--aa-AA--AAa")
