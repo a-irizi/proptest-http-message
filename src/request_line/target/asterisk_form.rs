@@ -8,15 +8,19 @@ pub fn asterisk() -> impl Strategy<Value = String> {
 }
 
 #[cfg(test)]
-mod tests {
+pub(super) mod tests {
   use proptest::proptest;
 
   use super::*;
 
+  pub(in super::super) fn asterisk_asserts(repr: &str) {
+    assert_eq!("*", repr, r#"expected asterisk form to be "*" but got {repr:?}"#);
+  }
+
   proptest! {
     #[test]
     fn asterisk_works(a in asterisk()) {
-      assert_eq!("*", a, r#"expected asterisk form to be "*" but got {a:?}"#);
+      asterisk_asserts(&a);
     }
   }
 }

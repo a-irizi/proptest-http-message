@@ -35,7 +35,7 @@ pub fn origin(
 }
 
 #[cfg(test)]
-mod tests {
+pub(super) mod tests {
   use std::sync::LazyLock;
 
   use claims::assert_ok;
@@ -49,26 +49,36 @@ mod tests {
     Url::parse(DUMMY_BASE_URL).unwrap_or_else(|_| panic!("{DUMMY_BASE_URL:?} is a valid base URL"))
   });
 
+  pub(in super::super) fn origin_asserts(origin: &OriginForm, repr: &str) {
+    let url = assert_ok!(BASE_URL.join(repr));
+
+    assert_eq!(
+      origin.path.normalized,
+      url.path(),
+      "expected path {:?} but parsed {}",
+      origin.path.normalized,
+      url.path()
+    );
+
+    match (origin.query.as_deref(), url.query()) {
+      (None, None) => {}
+      (Some(query), Some(query2)) => {
+        let query = query
+          .iter()
+          .map(|query| format!("{}={}", query.key, query.value.as_deref().unwrap_or_default()))
+          .collect::<Vec<_>>()
+          .join("&");
+        assert_eq!(query, query2, "expected query {query:?} but parsed {query2:?}");
+      }
+      (query, query2) => panic!("expected query {query:?} but got {query2:?}"),
+    }
+  }
+
   proptest! {
     #![proptest_config(ProptestConfig::with_cases(10_000))]
     #[test]
     fn origin_works((origin, repr) in origin(50.try_into().unwrap(), 0..=20)) {
-      let url = assert_ok!(BASE_URL.join(&repr));
-
-      assert_eq!(origin.path.normalized, url.path(),  "expected path {:?} but parsed {}", origin.path.normalized, url.path());
-
-      match (origin.query.as_deref(), url.query()) {
-        (None, None) => {},
-        (Some(query), Some(query2)) => {
-          let query = query.iter()
-            .map(|query| format!("{}={}", query.key, query.value.as_deref().unwrap_or_default()))
-            .collect::<Vec<_>>()
-            .join("&");
-          assert_eq!(query, query2, "expected query {query:?} but parsed {query2:?}");
-        }
-        (query, query2) => panic!("expected query {query:?} but got {query2:?}"),
-      }
-
+      origin_asserts(&origin, &repr);
     }
   }
 }
