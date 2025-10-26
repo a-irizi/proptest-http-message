@@ -12,8 +12,12 @@ use crate::request_line::{
 static USER_INFO_UNSAFE_CHARS: LazyLock<Vec<RangeInclusive<char>>> =
   LazyLock::new(|| char_diff_intervals(&USER_INFO_SAFE_CHARS));
 
-const USER_INFO_SAFE_CHARS: [char; concat_arrays_size!(UNRESERVED, SUB_DELIMS)] =
-  concat_arrays!(UNRESERVED, SUB_DELIMS);
+// even if RFC RFC 3986 states that:
+// userinfo = *( unreserved / pct-encoded / sub-delims / ":" )
+// RFC 3986 explicitly notes that the user:password format in userinfo is deprecated due to security risks.
+// Many parsers and systems are strict about special characters in credentials.
+// which means we should not include sub_delims in USER_INFO_SAFE_CHARS
+const USER_INFO_SAFE_CHARS: [char; concat_arrays_size!(UNRESERVED)] = concat_arrays!(UNRESERVED);
 
 fn user_info_subcomponent() -> impl Strategy<Value = String> {
   proptest::collection::vec(
