@@ -22,7 +22,11 @@ fn domain_label_remainder() -> impl Strategy<Value = String> {
 ///
 /// a domain is composed of labels separated by period.
 pub fn domain_label() -> impl Strategy<Value = String> {
-  ("[a-zA-Z]", (domain_label_remainder())).prop_map(move |(a, remainder)| format!("{a}{remainder}"))
+  ("[a-zA-Z]", (domain_label_remainder()))
+    .prop_map(move |(a, remainder)| format!("{a}{remainder}"))
+    .prop_filter("domain label starts with punycode prefix", |domain| {
+      !domain.to_lowercase().starts_with("xn--")
+    })
 }
 
 /// strategy for generating domains.
