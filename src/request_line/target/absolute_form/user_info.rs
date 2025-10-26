@@ -6,7 +6,7 @@ use array_concat::{concat_arrays, concat_arrays_size};
 use proptest::{option::of, prelude::Strategy};
 
 use crate::request_line::{
-  SUB_DELIMS, UNRESERVED, char_diff_intervals, safe_and_percent_encoded_char, url_chars_to_string,
+  UNRESERVED, char_diff_intervals, safe_and_percent_encoded_char, url_chars_to_string,
 };
 
 static USER_INFO_UNSAFE_CHARS: LazyLock<Vec<RangeInclusive<char>>> =
@@ -42,12 +42,10 @@ pub struct UserInfo {
 /// # Returns
 /// `UserInfo` along with it's representation.
 pub fn user_info() -> impl Strategy<Value = (UserInfo, String)> {
-  (user_info_subcomponent(), of(user_info_subcomponent())).prop_map(|(username, password)| {
-    let mut repr = username.clone();
-    if let Some(password) = password.as_ref() {
-      let _ = write!(repr, ":{password}");
-    }
-    (UserInfo { username, password }, repr)
+  (user_info_subcomponent(), user_info_subcomponent()).prop_map(|(username, password)| {
+    let repr = format!("{username}:{password}");
+    // if password is empty replace it with None
+    (UserInfo { username, password: if password.is_empty() { None } else { Some(password) } }, repr)
   })
 }
 
