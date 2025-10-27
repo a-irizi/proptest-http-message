@@ -5,7 +5,7 @@ use std::{ops::RangeInclusive, sync::LazyLock};
 use array_concat::{concat_arrays, concat_arrays_size};
 use proptest::prelude::Strategy;
 
-use crate::request_line::{
+use crate::request_line::target::components::{
   SUB_DELIMS, UNRESERVED, UrlChar, char_diff_intervals, safe_and_percent_encoded_char,
 };
 
