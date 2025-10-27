@@ -9,4 +9,4 @@ collection of [proptest](https://docs.rs/proptest/latest/proptest/) strategies r
     * [X] absolute form
     * [X] authority form
     * [X] asterisk form
-  * [ ] HTTP version
+  * [X] HTTP version

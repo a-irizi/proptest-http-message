@@ -1,11 +1,13 @@
 //! HTTP request line strategies.
 
+pub mod target;
+pub mod verb;
+pub mod version;
+
 use std::{fmt::Write, ops::RangeInclusive};
 
 use array_concat::{concat_arrays, concat_arrays_size};
 use proptest::{char::ranges, prelude::Strategy, prop_oneof, sample::select};
-pub mod target;
-pub mod verb;
 
 const UNRESERVED: [char; 66] = [
   'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
