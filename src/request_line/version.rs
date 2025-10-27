@@ -46,20 +46,24 @@ pub fn version() -> impl Strategy<Value = (HttpVersion, String)> {
 }
 
 #[cfg(test)]
-mod tests {
+pub(super) mod tests {
   use proptest::proptest;
 
   use super::*;
 
+  pub(in super::super) fn version_asserts(version: &HttpVersion, repr: &str) {
+    match version {
+      HttpVersion::Http10 => assert_eq!(repr, HTTP_1_0, "expected HTTP version 1.0 but got {repr}"),
+      HttpVersion::Http11 => assert_eq!(repr, HTTP_1_1, "expected HTTP version 1.1 but got {repr}"),
+      HttpVersion::Http2 => assert_eq!(repr, HTTP_2, "expected HTTP version 2 but got {repr}"),
+      HttpVersion::Http3 => assert_eq!(repr, HTTP_3, "expected HTTP version 3 but got {repr}"),
+    }
+  }
+
   proptest! {
     #[test]
     fn version_works((version, repr) in version()) {
-      match version {
-          HttpVersion::Http10 => assert_eq!(repr, HTTP_1_0, "expected HTTP version 1.0 but got {repr}"),
-          HttpVersion::Http11 => assert_eq!(repr, HTTP_1_1, "expected HTTP version 1.1 but got {repr}"),
-          HttpVersion::Http2 =>  assert_eq!(repr, HTTP_2, "expected HTTP version 2 but got {repr}"),
-          HttpVersion::Http3 =>  assert_eq!(repr, HTTP_3, "expected HTTP version 3 but got {repr}"),
-      }
+      version_asserts(&version, &repr);
     }
   }
 }

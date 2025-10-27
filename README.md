@@ -2,7 +2,7 @@ collection of [proptest](https://docs.rs/proptest/latest/proptest/) strategies r
 
 # Implemented strategies
 ## HTTP Request
-* [ ] request line:
+* [X] request line:
   * [X] request verb
   * [X] request target:
     * [X] origin form

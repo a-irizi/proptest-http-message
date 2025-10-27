@@ -52,20 +52,28 @@ pub fn target(
 }
 
 #[cfg(test)]
-mod tests {
+pub(super) mod tests {
   use proptest::proptest;
 
   use super::*;
 
+  pub(in super::super) fn target_asserts(target: &RequestTarget, repr: &str) {
+    match target {
+      RequestTarget::Absolute(absolute_form) => {
+        absolute_form::tests::absolute_asserts(absolute_form, repr);
+      }
+      RequestTarget::Origin(origin_form) => origin_form::tests::origin_asserts(origin_form, repr),
+      RequestTarget::Authority(authority_form) => {
+        authority_form::tests::authority_asserts(authority_form, repr);
+      }
+      RequestTarget::Asterisk => asterisk_form::tests::asterisk_asserts(repr),
+    }
+  }
+
   proptest! {
     #[test]
     fn target_works((target, repr) in target(20, 50.try_into().unwrap(), 0..=20)) {
-      match target {
-        RequestTarget::Absolute(absolute_form) => absolute_form::tests::absolute_asserts(&absolute_form, &repr),
-        RequestTarget::Origin(origin_form) => origin_form::tests::origin_asserts(&origin_form, &repr),
-        RequestTarget::Authority(authority_form) => authority_form::tests::authority_asserts(&authority_form, &repr),
-        RequestTarget::Asterisk => asterisk_form::tests::asterisk_asserts(&repr),
-    }
+      target_asserts(&target, &repr);
     }
   }
 }

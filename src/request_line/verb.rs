@@ -128,19 +128,21 @@ prop_compose! {
 }
 
 #[cfg(test)]
-mod tests {
+pub(super) mod tests {
   use super::*;
   use proptest::prelude::*;
+
+  pub(in super::super) fn request_verb_asserts(verb: &str) {
+    assert!(matches!(
+      verb,
+      "GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "CONNECT" | "OPTIONS" | "TRACE" | "PATCH"
+    ));
+  }
 
   proptest! {
     #[test]
     fn request_verb_ok(verb in request_verb()) {
-      assert!(
-        matches!(
-          verb.as_str(),
-          "GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "CONNECT" | "OPTIONS" | "TRACE" | "PATCH"
-        )
-      );
+      request_verb_asserts(&verb);
     }
   }
 
