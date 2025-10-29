@@ -22,6 +22,7 @@ const UNRESERVED: [char; 66] = [
 
 const SUB_DELIMS: [char; 11] = ['!', '$', '&', '\'', '(', ')', '*', '+', ',', ';', '='];
 const GEN_DELIMS: [char; 7] = [':', '/', '?', '#', '[', ']', '@'];
+#[expect(unused)]
 const RESERVED: [char; concat_arrays_size!(SUB_DELIMS, GEN_DELIMS)] =
   concat_arrays!(SUB_DELIMS, GEN_DELIMS);
 
