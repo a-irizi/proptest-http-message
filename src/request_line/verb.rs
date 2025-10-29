@@ -129,8 +129,9 @@ prop_compose! {
 
 #[cfg(test)]
 pub(super) mod tests {
-  use super::*;
   use proptest::prelude::*;
+
+  use super::*;
 
   pub(in super::super) fn request_verb_asserts(verb: &str) {
     assert!(matches!(
