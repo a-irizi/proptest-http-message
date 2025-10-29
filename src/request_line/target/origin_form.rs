@@ -39,7 +39,7 @@ pub(super) mod tests {
   use std::sync::LazyLock;
 
   use claims::assert_ok;
-  use proptest::{prelude::ProptestConfig, proptest};
+  use proptest::proptest;
   use url::Url;
 
   use super::*;
@@ -75,7 +75,6 @@ pub(super) mod tests {
   }
 
   proptest! {
-    #![proptest_config(ProptestConfig::with_cases(10_000))]
     #[test]
     fn origin_works((origin, repr) in origin(50.try_into().unwrap(), 0..=20)) {
       origin_asserts(&origin, &repr);

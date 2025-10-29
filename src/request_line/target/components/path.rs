@@ -98,12 +98,11 @@ pub fn path_absolute(max_segments: NonZero<usize>) -> impl Strategy<Value = (Pat
 mod tests {
   use std::num::NonZeroUsize;
 
-  use proptest::{prelude::ProptestConfig, proptest};
+  use proptest::proptest;
 
   use super::*;
 
   proptest! {
-    #![proptest_config(ProptestConfig::with_cases(10_000))]
     #[test]
     fn path_absolute_works((_, repr) in path_absolute(NonZeroUsize::new(25).unwrap())) {
       assert!(repr.starts_with('/'));

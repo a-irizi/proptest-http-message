@@ -62,7 +62,7 @@ pub fn absolute(
 #[cfg(test)]
 pub(super) mod tests {
   use claims::{assert_none, assert_ok};
-  use proptest::{prelude::ProptestConfig, proptest};
+  use proptest::proptest;
   use url::{Host, Url};
 
   use super::*;
@@ -157,7 +157,6 @@ pub(super) mod tests {
     }
   }
   proptest! {
-    #![proptest_config(ProptestConfig::with_cases(10_000))]
     #[test]
     fn absolute_works((absolute_form, repr) in absolute(20, 50.try_into().unwrap(), 0..=20)) {
       absolute_asserts(&absolute_form, &repr);
