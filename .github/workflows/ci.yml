@@ -1,0 +1,58 @@
+name: Cargo Build & Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  # Main job for testing, building, and linting
+  test:
+    name: Rust Project - ${{ matrix.toolchain }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # Test on multiple toolchains for comprehensive coverage
+        toolchain: [stable, beta]
+        # You can also add 'nightly' but allow it to fail
+        # For a simpler setup, use only [stable]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Rust toolchain and caching
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          toolchain: ${{ matrix.toolchain }}
+          components: clippy, rustfmt
+          # The action handles caching of the toolchain and build artifacts automatically[citation:10]
+
+      - name: Build
+        run: cargo build --verbose
+
+      - name: Run tests
+        run: cargo test --verbose
+
+      - name: Run Clippy
+        run: cargo clippy -- -D warnings
+
+      - name: Check formatting
+        run: cargo fmt -- --check
+
+  # Optional job to verify the latest dependencies work
+  latest_deps:
+    name: Latest Dependencies
+    runs-on: ubuntu-latest
+    continue-on-error: true # This prevents a failure from blocking the entire pipeline[citation:2]
+    env:
+      CARGO_RESOLVER_INCOMPATIBLE_RUST_VERSIONS: allow # Allows testing with newer deps[citation:2]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+      - run: cargo update --verbose # Update to the latest compatible versions
+      - run: cargo build --verbose
+      - run: cargo test --verbose
