@@ -41,9 +41,9 @@ pub fn absolute(
         scheme = scheme,
         authority = authority_repr,
         path = if let Some(path) = path.as_ref() { path.1.as_str() } else { "" },
-        query = if let Some((_, query)) = query.as_ref() { &format!("?{query}") } else { "" },
+        query = query.as_ref().map(|(_, query)| format!("?{query}")).as_deref().unwrap_or_default(),
         fragment =
-          if let Some(fragment) = fragment.as_ref() { &format!("#{fragment}") } else { "" }
+          fragment.as_ref().map(|fragment| format!("#{fragment}")).as_deref().unwrap_or_default()
       );
 
       (
