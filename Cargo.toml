@@ -12,6 +12,7 @@ authors = ["Anass IRIZI"]
 keywords = ["proptest", "http", "strategy", "testing", "fuzzing"]
 categories = ["development-tools::testing"]
 rust-version = "1.85"
+exclude = [".github", ".git*"]
 
 
 [dependencies]
