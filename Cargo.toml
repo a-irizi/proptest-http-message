@@ -6,6 +6,7 @@ description = "Proptest strategies for generating HTTP request and response mess
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/a-irizi/proptest-http-message"
 homepage = "https://github.com/a-irizi/proptest-http-message"
+documentation = "https://docs.rs/proptest-http-message"
 readme = "README.md"
 authors = ["Anass IRIZI"]
 keywords = ["proptest", "http", "strategy", "testing", "fuzzing"]
