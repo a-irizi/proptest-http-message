@@ -10,38 +10,8 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  # Main job for testing, building, and linting
-  test:
-    name: Rust Project - ${{ matrix.toolchain }}
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        # Test on multiple toolchains for comprehensive coverage
-        toolchain: [stable, beta, nightly]
-        # You can also add 'nightly' but allow it to fail
-        # For a simpler setup, use only [stable]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Rust toolchain and caching
-        uses: actions-rust-lang/setup-rust-toolchain@v1
-        with:
-          toolchain: ${{ matrix.toolchain }}
-          components: clippy, rustfmt
-          # The action handles caching of the toolchain and build artifacts automatically[citation:10]
-
-      - name: Build
-        run: cargo build --verbose
-
-      - name: Run tests
-        run: cargo test --verbose --release
-
-      - name: Run Clippy
-        run: cargo clippy -- -D warnings
-
-      - name: Check formatting
-        run: cargo fmt -- --check
+  verifications:
+    uses: ./.github/workflows/rust-verifications.yml
 
   # Optional job to verify the latest dependencies work
   latest_deps:
